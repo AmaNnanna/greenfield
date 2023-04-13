@@ -1,5 +1,5 @@
 	<!-- Page Title Section -->
-	<section class="page-title" style="background-image: url(<?= $assets ?>/images/background/2.jpg)">
+	<section class="page-title" style="background-image: url(<?= $assets ?>/images/background/5.jpg)">
 		<div class="auto-container">
 			<div class="content">
 				<div class="text">Welcome to Greenfield Executive Education</div>
@@ -64,10 +64,10 @@
 				<div class="image-column col-lg-6 col-md-12 col-sm-12">
 					<div class="inner-column">
 						<div class="image">
-							<img src="<?= $assets ?>/images/resource/contact-1.jpg" alt="">
+							<img src="<?= $assets ?>/images/resource/contact-3.jpg" alt="">
 						</div>
 						<div class="image-two">
-							<img src="<?= $assets ?>/images/resource/contact-2.jpg" alt="">
+							<img src="<?= $assets ?>/images/resource/contact-4.jpg" alt="">
 						</div>
 					</div>
 				</div>

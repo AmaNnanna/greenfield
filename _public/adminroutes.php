@@ -148,7 +148,7 @@ $Route->add("/admin/pages/{shortname}", function ($shortname) {
     } elseif ($shortname == "new-blog") {
         $Template->assign("title", "Create New Event");
     } else {
-        $Template->assign("title", "AULmed Admin Page");
+        $Template->assign("title", "Greenfield Admin Page");
     }
 
     $Template->render("admin.pages.{$shortname}");

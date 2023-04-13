@@ -1,10 +1,12 @@
     
 <?php
 
-define ('DOT', '.');
+use Apps\Template;
+use Apps\Core;
+
+define('DOT', '.');
 require_once(DOT . "/bootstrap.php");
 require_once(DOT . "/_public/adminroutes.php");
-require_once(DOT . "/_public/visitorsroutes.php");
 
 $Route = new Apps\Route;
 
@@ -71,8 +73,8 @@ $Route->add("/pages/{id}/blog-details", function ($id) {
 //Event Registration
 $Route->add("/pages/{id}/registration", function ($id) {
 
-    $Core = new Apps\Core;
-    $Template = new Apps\Template;
+    $Core = new Core;
+    $Template = new Template;
 
     $Template->addheader("layouts.header");
     $Template->addfooter("layouts.footer");
@@ -184,6 +186,22 @@ $Route->add("/event_registration", function () {
     $registered = (int)$Core->EventRegistration($event_id, $sureName, $otherNames, $email, $mobileNumber, $jobTitle, $company, $businessNumber, $homeAddress, $country);
 
     if ($registered) {
+
+        $reg = $Core->GetPeopleReg($reg->id);
+
+        $subject = "New Registration for an Upcoming Event";
+        $message = "<h2>A new Registratin by \${$reg->surename}</h2>
+                    <p> Here are the details of the new registration <br />
+                     Name: {$reg->surename}, {$reg->otherNames} <br />
+                     Email: {$reg->email} <br />
+                     Phone Number: {$reg->mobileNumber} <br />
+                     Company: {$reg->companysName} <br />
+                     Position: {$reg->jobTitle} <br />
+                     You can use these information to contact {$reg->otherNames}
+                     </p>
+                    ";
+        $Core->sendMail("info@greenfieldexedu.com", "Lillian", "Commision earned", $subject, $message);
+
         $Template->setError("You have successfully registered", "success", "/pages/events");
         $Template->redirect("/pages/events");
     }
@@ -191,6 +209,15 @@ $Route->add("/event_registration", function () {
     $Template->setError("The email you entered have already been registered for this event", "warning", "/pages/events");
     $Template->redirect("/pages/events");
 }, 'POST');
+
+// AJAX Routes
+$Route->add("/ajax/getpost", function () {
+    $Core = new Core;
+    $id = $Core->data->id;
+    $events = $Core->GetEventByID($id);
+    $events = json_encode($events);
+    $Core->debug($events);
+}, "POST");
 
 //Logout session//
 $Route->add("/admin/logout", function () {

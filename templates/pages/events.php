@@ -1,5 +1,5 @@
 <!-- Page Title Section -->
-<section class="page-title" style="background-image: url(<?= $assets ?>/images/background/2.jpg)">
+<section class="page-title" style="background-image: url(<?= $assets ?>/images/background/5.jpg)">
     <div class="auto-container">
         <div class="content">
             <div class="text">Welcome to Greenfield Executive Education</div>
@@ -61,13 +61,13 @@
                 <div class="course-block col-xl-4 col-lg-4 col-md-6 col-sm-12">
                     <div class="inner-box">
                         <div class="image">
-                            <a href="/pages/<?= $Event->id ?>/event-details"><img class="transition-500ms" src="<?= $Event->flyer ?>" alt="Event flyer" style="height: 415px;"></a>
+                            <a><img class="transition-500ms" src="<?= $Event->flyer ?>" alt="Event flyer" style="height: 415px;"></a>
                         </div>
                         <div class="lower-content">
-                            <h5><a href="/pages/<?= $Event->id ?>/event-details"><?= $Event->evetTitle ?></a></h5>
+                            <h5><a><?= $Event->evetTitle ?></a></h5>
                             <ul class="post-info">
                                 <li><span class="icon flaticon-time"></span> Duration <span><?= $Event->eventDuration ?></span></li>
-                                <li><span class="icon flaticon-book"></span><a href="/pages/<?= $Event->id ?>/registration">Register</a></li>
+                                <li><span class="icon flaticon-book"></span><a href="/pages/<?= $Event->id ?>/registration">Register Here</a></li>
                             </ul>
                         </div>
                     </div>

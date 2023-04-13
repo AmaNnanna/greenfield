@@ -1,5 +1,5 @@
 <!-- Page Title Section -->
-<section class="page-title" style="background-image: url(<?= $assets ?>/images/background/1.jpg)">
+<section class="page-title" style="background-image: url(<?= $assets ?>/images/background/5.jpg)">
 	<div class="auto-container">
 		<div class="content">
 			<div class="text">Welcome to Greenfield Executive Education</div>
@@ -143,7 +143,7 @@
 						<div class="image-column col-lg-4 col-md-12 col-sm-12">
 							<div class="inner-column">
 								<div class="image">
-									<a href="course_details"><img src="<?= $assets ?>/images/resource/year-3.jpg" alt=""></a>
+									<a href="course_details"><img src="<?= $assets ?>/images/resource/year-33.jpg" alt=""></a>
 								</div>
 							</div>
 						</div>

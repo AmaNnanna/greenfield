@@ -99,7 +99,14 @@
 <!-- End PageWrapper -->
 
 <!-- Scroll To Top -->
-<div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-arrow-up"></span></div>
+<!-- <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-arrow-up"></span></div> -->
+
+<!-- Add this HTML code where you want the WhatsApp button to appear -->
+<a class="scroll-to-top scroll-to-target" href="https://wa.me/2349042465972?text=Welcome%20to%20Greenfield%20Executive%20Education%20Help" onclick="" target="_blank">
+  <img src="<?= $assets ?>/images/whatsapp-logo.png" alt="WhatsApp" width="32" height="32">
+</a>
+<!-- End Add this HTML code -->
+
 
 <script src="<?= $assets ?>/js/jquery.js"></script>
 <script src="<?= $assets ?>/js/popper.min.js"></script>

@@ -70,7 +70,7 @@
 			<div class="image-column col-lg-5 col-md-12 col-sm-12">
 				<div class="inner-column">
 					<div class="image" data-tilt="" data-tilt-max="3">
-						<img src="<?= $assets ?>/images/resource/about-1.jpg" alt="">
+						<img src="<?= $assets ?>/images/resource/about-3.jpg" alt="">
 					</div>
 				</div>
 			</div>

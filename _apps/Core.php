@@ -95,7 +95,8 @@ class Core extends Model
 	}
 
 	//Collect Email for Newsletter
-	public function NewsletterEmail($newsletterEmail){
+	public function NewsletterEmail($newsletterEmail)
+	{
 		$sql = "INSERT INTO `newsletter_emails`(`newsletterEmail`) VALUES ('{$newsletterEmail}')";
 		$addEmail = mysqli_query($this->dbCon, $sql);
 
@@ -104,7 +105,8 @@ class Core extends Model
 	//Collect Email for Newsletter Ends
 
 	//Create New User
-	public function CreateNewUser($fullName, $email, $password){
+	public function CreateNewUser($fullName, $email, $password)
+	{
 		$newUser = mysqli_query($this->dbCon, "INSERT INTO users(fullName, email, password) VALUES ('$fullName', '$email', '$password')");
 
 		return $newUser;
@@ -112,7 +114,8 @@ class Core extends Model
 	//Create New User Ends
 
 	//User Login
-	public function UserLogin($email, $password) {
+	public function UserLogin($email, $password)
+	{
 		$sql = "SELECT * FROM users WHERE email = '{$email}' AND password = '{$password}'";
 		$user = mysqli_query($this->dbCon, $sql);
 
@@ -123,7 +126,8 @@ class Core extends Model
 	//User Login Ends
 
 	//Admin Login
-	public function AdminLogin($email, $password) {
+	public function AdminLogin($email, $password)
+	{
 		$sql = "SELECT * FROM main_admin WHERE email = '{$email}' AND password = '{$password}'";
 		$admin = mysqli_query($this->dbCon, $sql);
 
@@ -134,7 +138,8 @@ class Core extends Model
 	//Admin Login Ends
 
 	//Create New Blog
-	public function CreateNewBlog($evetTitle, $startDate, $endDate, $eventDescription, $videoLink, $eventFee, $professionalLevel, $eventDuration, $eventOrganisers, $flyer, $videoImage) {
+	public function CreateNewBlog($evetTitle, $startDate, $endDate, $eventDescription, $videoLink, $eventFee, $professionalLevel, $eventDuration, $eventOrganisers, $flyer, $videoImage)
+	{
 
 		$sql = "INSERT INTO events (evetTitle, startDate, endDate, eventDescription, videoLink, eventFee, professionalLevel, eventDuration, eventOrganisers, flyer, videoImage) VALUES ('$evetTitle', '$startDate', '$endDate', '$eventDescription', '$videoLink', '$eventFee', '$professionalLevel', '$eventDuration', '$eventOrganisers', '$flyer', '$videoImage')";
 
@@ -142,10 +147,27 @@ class Core extends Model
 
 		return $newBlog;
 	}
-	//Create New Blog Ends
+	
+	// Retrieving Event Based on Id
+	public function GetEventByID($id)
+	{
+		$sql = "SELECT * FROM `registrations` WHERE `event_id`='$id'";
+		$events = mysqli_query($this->dbCon, $sql);
+		$events = mysqli_fetch_all($events);
+		return $events;
+	}
 
-	//Registration Form
-	public function EventRegistration($event_id, $sureName, $otherNames, $email, $mobileNumber, $jobTitle, $company, $businessNumber, $homeAddress, $country) {
+	//Retrieving People Registered for Events
+	public function GetPeopleReg($id)
+	{
+		$sql = "SELECT * FROM `registrations` WHERE `id`='$id'";
+		$reg = mysqli_query($this->dbCon, $sql);
+		$reg = mysqli_fetch_object($reg);
+		return $reg;
+	}
+	
+	public function EventRegistration($event_id, $sureName, $otherNames, $email, $mobileNumber, $jobTitle, $company, $businessNumber, $homeAddress, $country)
+	{
 
 		$sql = "INSERT INTO registrations (event_id, sureName, otherNames, email, mobileNumber, jobTitle, company, businessNumber, homeAddress, country) VALUES ('$event_id', '$sureName', '$otherNames', '$email', '$mobileNumber', '$jobTitle', '$company', '$businessNumber', '$homeAddress', '$country')";
 
@@ -155,7 +177,8 @@ class Core extends Model
 	}
 
 	//Create New Campaign
-	public function CreateNewCampaign($campaignTopic, $campaignDescription, $campaignDetails, $startDate, $endDate, $campaignImage) {
+	public function CreateNewCampaign($campaignTopic, $campaignDescription, $campaignDetails, $startDate, $endDate, $campaignImage)
+	{
 
 		$sql = "INSERT INTO campaigns (campaignTopic, campaignDescription, campaignDetails, startDate, endDate, campaignImage) VALUES ('$campaignTopic', '$campaignDescription', '$campaignDetails', '$startDate', '$endDate', '$campaignImage')";
 
@@ -166,7 +189,8 @@ class Core extends Model
 	//Create New Campaign Ends
 
 	//Update Existing Blog
-	public function UpdateBlog($id, $heading, $postCreator, $shortDescription, $firstContent, $secondContent, $thirdContent, $blockQuote, $quoteAuthor, $videoLink, $secondImageHeading, $thirdImageHeading) {
+	public function UpdateBlog($id, $heading, $postCreator, $shortDescription, $firstContent, $secondContent, $thirdContent, $blockQuote, $quoteAuthor, $videoLink, $secondImageHeading, $thirdImageHeading)
+	{
 
 		$sql = "UPDATE `blog_posts` SET `heading`=
 		$heading', `postCreator`='$postCreator', `shortDescription`='$shortDescription', `firstContent`='$firstContent', `secondContent`='$secondContent', `thirdContent`='$thirdContent', `blockQuote`='$blockQuote', `quoteAuthor`='$quoteAuthor', `videoLink`='$videoLink', `secondImageHeading`='$secondImageHeading', `thirdImageHeading`='$thirdImageHeading' WHERE `id`='$id'";
@@ -177,7 +201,8 @@ class Core extends Model
 	}
 
 	//Update Exiting Campaign
-	public function UpdateCampaign($id, $campaignTopic, $campaignDescription, $campaignDetails, $startDate, $endDate) {
+	public function UpdateCampaign($id, $campaignTopic, $campaignDescription, $campaignDetails, $startDate, $endDate)
+	{
 
 		$sql = "UPDATE `campaigns` SET `campaignTopic`='$campaignTopic',`campaignDescription`='$campaignDescription',`campaignDetails`='$campaignDetails',`startDate`='$startDate',`endDate`='$endDate' WHERE `id`='$id'";
 
@@ -186,4 +211,28 @@ class Core extends Model
 		return $campaignUpdate;
 	}
 	
+	/**
+	 * @param mixed $email
+	 * @param mixed $fullname
+	 * @param mixed $subject
+	 * @param mixed $body
+	 * @param string $type
+	 * @return void
+	 */
+	public function sendMail($email, $fullname, $subject, $caption, $body, $template = 'mails.template')
+	{
+		$Mailer = new Emailer();
+		$EmailTemplate = new EmailTemplate($template);
+		$EmailTemplate->subject = $subject;
+		$EmailTemplate->caption = $caption;
+		$EmailTemplate->fullname = $fullname;
+		$EmailTemplate->mailbody = $body;
+		$Mailer->SetTemplate($EmailTemplate);
+		$Mailer->toEmail = "info@greenfieldexedu.com";
+		$Mailer->toName = "Lillian";
+		$Mailer->subject = "{$subject}";
+		$Mailer->fromEmail = "admin@greenfieldexedu.com";
+		$Mailer->fromName = "Greenfield Admin";
+		return $Mailer->send();
+	}
 }
