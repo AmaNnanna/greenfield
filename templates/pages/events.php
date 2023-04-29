@@ -16,9 +16,9 @@
 <!-- End Page Title Section -->
 
 <!-- Courses Page Section -->
-<section class="courses-page-section">
+<section class="courses-page-section history-section">
     <div class="auto-container">
-    <h5><?= $SELF->Toast(); ?></h5>
+        <h5><?= $SELF->Toast(); ?></h5>
 
         <!-- Order Box -->
         <div class="order-box">
@@ -54,8 +54,12 @@
         </div>
         <!-- End Order Box -->
 
-        <div class="row clearfix">
+        <div class="sec-title centered">
+            <div class="title color-four">All our Events</div>
+            <h2>Current Events</h2>
+        </div>
 
+        <div class="row clearfix">
             <!-- Course Block -->
             <?php while ($Event = mysqli_fetch_object($Events)) : ?>
                 <div class="course-block col-xl-4 col-lg-4 col-md-6 col-sm-12">
@@ -73,6 +77,70 @@
                     </div>
                 </div>
             <?php endwhile; ?>
+
+        </div>
+
+        <div class="sec-title centered">
+            <div class="title color-four">All our Events</div>
+            <h2>Past Events</h2>
+        </div>
+        <div class="row clearfix">
+
+            <!-- Course Block -->
+            <div class="course-block col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                <div class="inner-box">
+                    <div class="image">
+                        <a><img class="transition-500ms" src="<?= $assets ?>/images/old-flyers/1.jpg" alt="Event flyer" style="height: 415px;"></a>
+                    </div>
+                    <div class="lower-content">
+                        <h5><a>PAN AFRICAN LEADERSHIP SYMPOSUIM AND HONORS (PALESH ABUJA 2022)</a></h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="course-block col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                <div class="inner-box">
+                    <div class="image">
+                        <a><img class="transition-500ms" src="<?= $assets ?>/images/old-flyers/2.jpg" alt="Event flyer" style="height: 415px;"></a>
+                    </div>
+                    <div class="lower-content">
+                        <h5><a>PAN AFRICAN LEADERSHIP SYMPOSUIM AND HONORS RWANDA</a></h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="course-block col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                <div class="inner-box">
+                    <div class="image">
+                        <a><img class="transition-500ms" src="<?= $assets ?>/images/old-flyers/3.jpg" alt="Event flyer" style="height: 415px;"></a>
+                    </div>
+                    <div class="lower-content">
+                        <h5><a>INTERNATIONAL INSTITUTE OF CHARTERED EDUCATIONAL PRACTITIONERS, (IICEP), INVITATION FOR THE INDUCTION OF DOCTORAL FELLOWS</a></h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="course-block col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                <div class="inner-box">
+                    <div class="image">
+                        <a><img class="transition-500ms" src="<?= $assets ?>/images/old-flyers/4.jpg" alt="Event flyer" style="height: 415px;"></a>
+                    </div>
+                    <div class="lower-content">
+                        <h5><a>Nomination for IPGC SDG Award</a></h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="course-block col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                <div class="inner-box">
+                    <div class="image">
+                        <a><img class="transition-500ms" src="<?= $assets ?>/images/old-flyers/5.jpg" alt="Event flyer" style="height: 415px;"></a>
+                    </div>
+                    <div class="lower-content">
+                        <h5><a>LEADERSHIP LEARNING AND DEVELOPMENT SUMMIT</a></h5>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>

@@ -36,10 +36,10 @@ include_once 'sidebar.php';
                     </div>
                     <div class="card-footer d-sm-flex justify-content-between align-items-center">
                         <div class="card-footer-link mb-4 mb-sm-0">
-                            <a href="#" class="card-text text-dark d-inline">See all Events</a>
+                            <a href="/admin/pages/all-events" class="card-text text-dark d-inline">See all Events</a>
                         </div>
 
-                        <a href="/admin/pages/new-blog" class="btn btn-primary">Add Upcoming Event</a>
+                        <a href="/admin/pages/create-event" class="btn btn-primary">Add Upcoming Event</a>
                     </div>
                 </div>
             </div>
@@ -54,7 +54,7 @@ include_once 'sidebar.php';
                     </div>
                     <div class="card-footer d-sm-flex justify-content-between align-items-center">
                         <div class="card-footer-link mb-4 mb-sm-0">
-                            <a href="/admin/pages/#" class="card-text text-dark d-inline">View All Campaigns</a>
+                            <a href="/admin/pages/#" class="card-text text-dark d-inline"></a>
                         </div>
 
                         <a href="/admin/pages/event-registrations" class="btn btn-primary">See People registered</a>

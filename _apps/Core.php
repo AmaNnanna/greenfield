@@ -7,6 +7,7 @@ use \Apps\MysqliDb;
 use \Apps\Session;
 use mysqli;
 use \Verot\UploadFiles;
+use \Apps\EmailTemplate;
 
 class Core extends Model
 {
@@ -137,15 +138,15 @@ class Core extends Model
 	}
 	//Admin Login Ends
 
-	//Create New Blog
-	public function CreateNewBlog($evetTitle, $startDate, $endDate, $eventDescription, $videoLink, $eventFee, $professionalLevel, $eventDuration, $eventOrganisers, $flyer, $videoImage)
+	//Create New Event Starts
+	public function CreateNewEvent($evetTitle, $startDate, $endDate, $eventDescription, $eventFee, $professionalLevel, $eventDuration, $eventOrganisers, $flyer)
 	{
 
-		$sql = "INSERT INTO events (evetTitle, startDate, endDate, eventDescription, videoLink, eventFee, professionalLevel, eventDuration, eventOrganisers, flyer, videoImage) VALUES ('$evetTitle', '$startDate', '$endDate', '$eventDescription', '$videoLink', '$eventFee', '$professionalLevel', '$eventDuration', '$eventOrganisers', '$flyer', '$videoImage')";
+		$sql = "INSERT INTO events (evetTitle, startDate, endDate, eventDescription, eventFee, professionalLevel, eventDuration, eventOrganisers, flyer) VALUES ('$evetTitle', '$startDate', '$endDate', '$eventDescription', '$eventFee', '$professionalLevel', '$eventDuration', '$eventOrganisers', '$flyer')";
 
-		$newBlog = mysqli_query($this->dbCon, $sql);
+		$newEvent = mysqli_query($this->dbCon, $sql);
 
-		return $newBlog;
+		return $newEvent;
 	}
 	
 	// Retrieving Event Based on Id
@@ -155,15 +156,6 @@ class Core extends Model
 		$events = mysqli_query($this->dbCon, $sql);
 		$events = mysqli_fetch_all($events);
 		return $events;
-	}
-
-	//Retrieving People Registered for Events
-	public function GetPeopleReg($id)
-	{
-		$sql = "SELECT * FROM `registrations` WHERE `id`='$id'";
-		$reg = mysqli_query($this->dbCon, $sql);
-		$reg = mysqli_fetch_object($reg);
-		return $reg;
 	}
 	
 	public function EventRegistration($event_id, $sureName, $otherNames, $email, $mobileNumber, $jobTitle, $company, $businessNumber, $homeAddress, $country)
@@ -188,16 +180,16 @@ class Core extends Model
 	}
 	//Create New Campaign Ends
 
-	//Update Existing Blog
-	public function UpdateBlog($id, $heading, $postCreator, $shortDescription, $firstContent, $secondContent, $thirdContent, $blockQuote, $quoteAuthor, $videoLink, $secondImageHeading, $thirdImageHeading)
+	//Update Existing Event-(Not being used)
+	public function UpdateEvent($id, $evetTitle, $startDate, $endDate, $eventDescription, $eventFee, $professionalLevel, $eventDuration, $eventOrganisers)
 	{
 
-		$sql = "UPDATE `blog_posts` SET `heading`=
-		$heading', `postCreator`='$postCreator', `shortDescription`='$shortDescription', `firstContent`='$firstContent', `secondContent`='$secondContent', `thirdContent`='$thirdContent', `blockQuote`='$blockQuote', `quoteAuthor`='$quoteAuthor', `videoLink`='$videoLink', `secondImageHeading`='$secondImageHeading', `thirdImageHeading`='$thirdImageHeading' WHERE `id`='$id'";
+		$sql = "UPDATE `events` SET `evetTitle`=
+		$evetTitle', `startDate`='$startDate', `endDate`='$endDate', `eventDescription`='$eventDescription', `eventFee`='$eventFee', `professionalLevel`='$professionalLevel', `eventDuration`='$eventDuration', `eventOrganisers`='$eventOrganisers' WHERE `id`='$id'";
 
-		$blogUpdate = mysqli_query($this->dbCon, $sql);
+		$eventUpdate = mysqli_query($this->dbCon, $sql);
 
-		return $blogUpdate;
+		return $eventUpdate;
 	}
 
 	//Update Exiting Campaign
@@ -219,7 +211,7 @@ class Core extends Model
 	 * @param string $type
 	 * @return void
 	 */
-	public function sendMail($email, $fullname, $subject, $caption, $body, $template = 'mails.template')
+	public function sendMail($fullname, $subject, $caption, $body, $template = 'mails.template')
 	{
 		$Mailer = new Emailer();
 		$EmailTemplate = new EmailTemplate($template);

@@ -27,11 +27,11 @@ $Route->add("/admin", function () {
     $Template->render("admin.pages.login");
 }, 'GET');
 
-//Get All Blogs
-$Route->add("/admin/pages/all-blogs", function () {
+//Get All Events
+$Route->add("/admin/pages/all-events", function () {
 
     $Core = new Apps\Core;
-    $Template = new Apps\Template(auth_url);
+    $Template = new Apps\Template;
 
     $Template->assign("haspage", true);
     $Template->assign("menukey", "admin.all-blogs");
@@ -40,11 +40,11 @@ $Route->add("/admin/pages/all-blogs", function () {
     $Template->addheader("admin.layouts.header");
     $Template->addfooter("admin.layouts.footer");
 
-    $blogSql = "SELECT * FROM `blog_posts` ORDER BY id DESC";
-    $Blogs = mysqli_query($Core->dbCon, $blogSql);
-    $Template->assign("Blogs", $Blogs);
+    $eventSql = "SELECT * FROM `events` ORDER BY id DESC";
+    $Events = mysqli_query($Core->dbCon, $eventSql);
+    $Template->assign("Events", $Events);
 
-    $Template->render("admin.pages.all-blogs");
+    $Template->render("admin.pages.all-events");
 }, 'GET');
 
 //Get All Campaigns
@@ -67,26 +67,26 @@ $Route->add("/admin/pages/all-campaigns", function () {
     $Template->render("admin.pages.all-campaigns");
 }, 'GET');
 
-//Render Blog Update page
-$Route->add("/admin/pages/{id}/update-blog", function ($id) {
+//Render Event Update page
+$Route->add("/admin/pages/{id}/update-event", function ($id) {
 
     $Core = new Apps\Core;
-    $Template = new Apps\Template(auth_url);
+    $Template = new Apps\Template();
 
     $Template->assign("haspage", true);
-    $Template->assign("menukey", "admin.update-blog");
+    $Template->assign("menukey", "admin.update-event");
     $Template->assign("title", "Update-Blog");
 
     $Template->addheader("admin.layouts.header");
     $Template->addfooter("admin.layouts.footer");
 
-    $blogSql = "SELECT * FROM `blog_posts` WHERE id = $id";
-    $updateBlog = mysqli_query($Core->dbCon, $blogSql);
-    $newBlogUpdate = mysqli_fetch_object($updateBlog);
+    $eventSql = "SELECT * FROM `events` WHERE id = $id";
+    $updateEvent = mysqli_query($Core->dbCon, $eventSql);
+    $newEventUpdate = mysqli_fetch_object($updateEvent);
 
-    $Template->assign("newBlogUpdate", $newBlogUpdate);
+    $Template->assign("newEventUpdate", $newEventUpdate);
 
-    $Template->render("admin.pages.update-blog");
+    $Template->render("admin.pages.update-event");
 }, 'GET');
 
 //Render Campaign Update page
@@ -192,8 +192,8 @@ $Route->add("/admin_login", function () {
     $Template->redirect("/admin/pages/login");
 }, 'POST');
 
-//Post New Blog by Admin
-$Route->add("/new_blog", function () {
+//Post New Event by Admin
+$Route->add("/create_event", function () {
     $Core = new Apps\Core;
     $Template = new Apps\Template;
 
@@ -204,7 +204,6 @@ $Route->add("/new_blog", function () {
     $endDate = $data->endDate;
     $eventDescription = $data->eventDescription;
 
-    $videoLink = $data->videoLink;
     $eventFee = $data->eventFee;
     $professionalLevel = $data->professionalLevel;
 
@@ -212,10 +211,8 @@ $Route->add("/new_blog", function () {
     $eventOrganisers = $data->eventOrganisers;
 
     $flyer = "";
-    $videoImage = "";
 
-    //Uploading Event Pictures//
-    //Flyer
+    //Uploading Event Flyer
     $flyer_path_to_db = "";
 
     $Uploader = new \Verot\Upload\Upload($_FILES['flyer']);
@@ -233,26 +230,8 @@ $Route->add("/new_blog", function () {
 
     $flyer = $flyer_path_to_db;
 
-    //Video Image
-    $video_image_path_to_db = "";
 
-    $Uploader = new \Verot\Upload\Upload($_FILES['videoImage']);
-
-    if ($Uploader->uploaded) {
-        $name = md5(time() . mt_rand(1, 10000));
-        $Uploader->file_new_name_body = $name;
-        $Uploader->process("./_store/events/");
-
-        if ($Uploader->processed) {
-            $video_image_path_to_db = $Uploader->file_dst_pathname;
-        } else {
-        }
-    }
-
-    $videoImage = $video_image_path_to_db;
-
-
-    $newBlog = (int)$Core->CreateNewBlog($evetTitle, $startDate, $endDate, $eventDescription, $videoLink, $eventFee, $professionalLevel, $eventDuration, $eventOrganisers, $flyer, $videoImage);
+    $newBlog = (int)$Core->CreateNewEvent($evetTitle, $startDate, $endDate, $eventDescription, $eventFee, $professionalLevel, $eventDuration, $eventOrganisers, $flyer);
 
     if ($newBlog) {
         $Template->setError("This Event has beed Added", "success", "/admin/pages/admin-home");
@@ -262,7 +241,6 @@ $Route->add("/new_blog", function () {
     $Template->setError("Something went wrong, and your event didn't post", "warning", "/admin/pages/admin-home");
     $Template->redirect("/admin/pages/admin-home");
 }, 'POST');
-//Post Blog by Admin Ends
 
 //Post New Campaign by Admin
 $Route->add("/new_campaign", function () {
@@ -616,7 +594,7 @@ $Route->add("/new_video_tutorial", function() {
     $Template->redirect("/admin/pages/admin-home");
 }, 'POST');
 
-//Create New Event
+//Create New Event from AULMed
 $Route->add("/new_event", function() {
     $Core = new Apps\Core;
     $Template = new Apps\Template;
@@ -663,135 +641,65 @@ $Route->add("/new_event", function() {
 }, 'POST');
 
 
-//Update Blog by Admin-Change Images
-//First Image
-$Route->add("/update_blog/{id}/first_image", function ($id) {
+//Update Events by Admin-Change Flyer
+$Route->add("/update_event/{id}/flyer", function ($id) {
     $Core = new Apps\Core();
     $Template = new Apps\Template();
 
-    $firstImage = "";
-    $first_image_path_to_db = "";
+    $flyer = "";
+    $flyer_path_to_db = "";
 
-    $Uploader = new \Verot\Upload\Upload($_FILES['firstImage']);
+    $Uploader = new \Verot\Upload\Upload($_FILES['flyer']);
 
     if ($Uploader->uploaded) {
         $name = md5(time() . mt_rand(1, 10000));
         $Uploader->file_new_name_body = $name;
-        $Uploader->process("./_store/blog_posts/");
+        $Uploader->process("./_store/events/");
 
         if ($Uploader->processed) {
-            $first_image_path_to_db = $Uploader->file_dst_pathname;
+            $flyer_path_to_db = $Uploader->file_dst_pathname;
         } else {
         }
     }
 
-    $firstImage = $first_image_path_to_db;
+    $flyer = $flyer_path_to_db;
     
-    $sql = "UPDATE `blog_posts` SET `firstImage`='$firstImage' WHERE `id`='$id'";
-    $newFirstImage = mysqli_query($Core->dbCon, $sql);
+    $sql = "UPDATE `events` SET `flyer`='$flyer' WHERE `id`='$id'";
+    $newFlyer = mysqli_query($Core->dbCon, $sql);
 
-    if ($newFirstImage) {
-        $Template->setError("Image Changed Successfully. <br />You can update the rest of the blog.", "success", "/admin/pages/all-blogs");
-        $Template->redirect("/admin/pages/all-blogs");
+    if ($newFlyer) {
+        $Template->setError("Flyer Changed Successfully. <br />You can update the rest of the Events.", "success", "/admin/pages/all-events");
+        $Template->redirect("/admin/pages/all-events");
     }
 }, 'POST');
 
-//Second Image
-$Route->add("/update_blog/{id}/second_image", function ($id) {
-    $Core = new Apps\Core();
-    $Template = new Apps\Template();
-
-    $secondImage = "";
-    $second_image_path_to_db = "";
-
-    $Uploader = new \Verot\Upload\Upload($_FILES['secondImage']);
-
-    if ($Uploader->uploaded) {
-        $name = md5(time() . mt_rand(1, 10000));
-        $Uploader->file_new_name_body = $name;
-        $Uploader->process("./_store/blog_posts/");
-
-        if ($Uploader->processed) {
-            $second_image_path_to_db = $Uploader->file_dst_pathname;
-        } else {
-        }
-    }
-
-    $secondImage = $second_image_path_to_db;
-
-    $sql = "UPDATE `blog_posts` SET `secondImage`='$secondImage' WHERE `id`='$id'";
-    $newSecondImage = mysqli_query($Core->dbCon, $sql);
-
-    if ($newSecondImage) {
-        $Template->setError("Image Changed Successfully. <br />You can update the rest of the blog.", "success", "/admin/pages/all-blogs");
-        $Template->redirect("/admin/pages/all-blogs");
-    }
-}, 'POST');
-
-//Third Image
-$Route->add("/update_blog/{id}/third_image", function ($id) {
-    $Core = new Apps\Core();
-    $Template = new Apps\Template();
-
-    $thirdImage = "";
-    $third_image_path_to_db = "";
-
-    $Uploader = new \Verot\Upload\Upload($_FILES['thirdImage']);
-
-    if ($Uploader->uploaded) {
-        $name = md5(time() . mt_rand(1, 10000));
-        $Uploader->file_new_name_body = $name;
-        $Uploader->process("./_store/blog_posts/");
-
-        if ($Uploader->processed) {
-            $third_image_path_to_db = $Uploader->file_dst_pathname;
-        } else {
-        }
-    }
-
-    $thirdImage = $third_image_path_to_db;
-
-    $sql = "UPDATE `blog_posts` SET `thirdImage`='$thirdImage' WHERE `id`='$id'";
-    $newThirdImage = mysqli_query($Core->dbCon, $sql);
-
-    if ($newThirdImage) {
-        $Template->setError("Image Changed Successfully. <br />You can update the rest of the blog.", "success", "/admin/pages/all-blogs");
-        $Template->redirect("/admin/pages/all-blogs");
-    }
-}, 'POST');
-//Update Blog by Admin-Change Images Ends
-
-
-//Updating the Rest of the Blog
-$Route->add("/update_blog/{id}", function ($id) {
+//Updating the Rest of the Event
+$Route->add("/update_event/{id}/body", function ($id) {
     $Core = new Apps\Core;
     $Template = new Apps\Template;
 
     $data = $Core->post($_POST);
 
-    $heading = $data->heading;
-    $postCreator = $data->postCreator;
-    $shortDescription = $data->shortDescription;
+    $evetTitle = $data->evetTitle;
+    $startDate = $data->startDate;
+    $endDate = $data->endDate;
+    $eventDescription = $data->eventDescription;
 
-    $firstContent = $data->firstContent;
-    $secondContent = $data->secondContent;
-    $thirdContent = $data->thirdContent;
+    $eventFee = $data->eventFee;
+    $professionalLevel = $data->professionalLevel;
 
-    $blockQuote = $data->blockQuote;
-    $quoteAuthor = $data->quoteAuthor;
-    $videoLink = $data->videoLink;
+    $eventDuration = $data->eventDuration;
+    $eventOrganisers = $data->eventOrganisers;
 
-    $secondImageHeading = $data->secondImageHeading;
-    $thirdImageHeading = $data->thirdImageHeading;
+    $sql = "UPDATE `events` SET `evetTitle`='$evetTitle', `startDate`='$startDate', `endDate`='$endDate', `eventDescription`='$eventDescription', `eventFee`='$eventFee', `professionalLevel`='$professionalLevel', `eventDuration`='$eventDuration', `eventOrganisers`='$eventOrganisers' WHERE `id`='$id'";
+    $updatedEvent = mysqli_query($Core->dbCon, $sql);
 
-    $updateBlog = (int)$Core->UpdateBlog($id, $heading, $postCreator, $shortDescription, $firstContent, $secondContent, $thirdContent, $blockQuote, $quoteAuthor, $videoLink, $secondImageHeading, $thirdImageHeading);
-
-    if ($updateBlog) {
-        $Template->setError("Your Blog was Updated", "success", "/admin/pages/admin-home");
+    if ($updatedEvent) {
+        $Template->setError("This Event was Updated", "success", "/admin/pages/admin-home");
         $Template->redirect("/admin/pages/admin-home");
     }
 
-    $Template->setError("Something went wrong, and your blog didn't update", "warning", "/admin/pages/admin-home");
+    $Template->setError("Something went wrong, and your event didn't update", "warning", "/admin/pages/admin-home");
     $Template->redirect("/admin/pages/admin-home");
 }, 'POST');
 

@@ -26,7 +26,6 @@ $Route->add('/', function () {
     $Template->render("home");
 }, 'GET');
 
-//Get Blog's Pages//
 //Get All Events
 $Route->add("/pages/events", function () {
 
@@ -68,7 +67,7 @@ $Route->add("/pages/{id}/blog-details", function ($id) {
 
     $Template->render("pages.blog-details");
 }, 'GET');
-//Get Blog's Pages Ends//
+
 
 //Event Registration
 $Route->add("/pages/{id}/registration", function ($id) {
@@ -115,36 +114,6 @@ $Route->add("/pages/{shortname}", function ($shortname) {
     $Template->render("pages.{$shortname}");
 }, 'GET');
 
-// //Emailer
-// $Route->add('/password', function () {
-
-//     $Core = new Apps\Core;
-//     $Template = new Apps\Template;
-
-//     $password = $Core->GenPassword(10);
-
-//     $sent = mail("agu.chux@gmail.com", "Welcome", "Thanks you {$password}");
-
-//     // $EmailTemplate = new Apps\EmailTemplate("mails.default");
-//     // $EmailTemplate->fullname = "Agu Chux";
-//     // $EmailTemplate->email = "agu.chux@gmail.com";
-//     // $EmailTemplate->password = $password;
-
-//     // $Template->debug($EmailTemplate);
-
-//     // $Mailer = new Apps\Emailer();
-//     // $Mailer->SetTemplate($EmailTemplate);
-
-//     // $Mailer->fromEmail = "info@mmacareservices.com";
-//     // $Mailer->fromName = "MMA Care Services";
-//     // $Mailer->replyEmail = "info@mmacareservices.com";
-//     // $Mailer->replyName = "MMA Care Services";
-//     // $Mailer->subject = "Welcome: Your login";
-
-//     // $sent = $Mailer->send();
-
-// }, 'GET');
-
 //Collect Newsletter Email
 // $Route->add("/newsletter", function () {
 //     $Core = new Apps\Core;
@@ -164,6 +133,24 @@ $Route->add("/pages/{shortname}", function ($shortname) {
 //     $Template->setError("This Email already receives our Newsletter.", "Success", "/");
 //     $Template->redirect("/");
 // }, 'POST');
+
+//Post New Blog by Admin
+$Route->add("/pages/mail", function () {
+    $Core = new Apps\Core;
+    
+    $subject = "New Registration for ";
+    $message = "<h2>A new Registration by </h2>
+                    <p> Here are the details of the new registration <br />
+                     Name:  <br />
+                     Email:  <br />
+                     Phone Number:  <br />
+                     Company:  <br />
+                     Position:  <br />
+                     You can use these information to contact 
+                     </p>
+                    ";
+    $Core->sendMail("Lillian", "New Event Registration", $subject, $message);
+}, 'POST' );
 
 //Post New Blog by Admin
 $Route->add("/event_registration", function () {
@@ -187,26 +174,28 @@ $Route->add("/event_registration", function () {
 
     if ($registered) {
 
-        $reg = $Core->GetPeopleReg($reg->id);
+        $eventSql = "SELECT * FROM `events` WHERE id = $event_id";
+        $sql = mysqli_query($Core->db, $eventSql);
+        $eventName = mysqli_fetch_object($sql);
 
-        $subject = "New Registration for an Upcoming Event";
-        $message = "<h2>A new Registratin by \${$reg->surename}</h2>
+        $subject = "New Registration for <?= $eventName->evetName ?>";
+        $message = "<h2>A new Registration by {$sureName}</h2>
                     <p> Here are the details of the new registration <br />
-                     Name: {$reg->surename}, {$reg->otherNames} <br />
-                     Email: {$reg->email} <br />
-                     Phone Number: {$reg->mobileNumber} <br />
-                     Company: {$reg->companysName} <br />
-                     Position: {$reg->jobTitle} <br />
-                     You can use these information to contact {$reg->otherNames}
+                     Name: {$sureName}, {$otherNames} <br />
+                     Email: {$email} <br />
+                     Phone Number: {$mobileNumber} <br />
+                     Company: {$company} <br />
+                     Position: {$jobTitle} <br />
+                     You can use these information to contact {$sureName}
                      </p>
                     ";
-        $Core->sendMail("info@greenfieldexedu.com", "Lillian", "Commision earned", $subject, $message);
+        $Core->sendMail("Lillian", "New Event Registration", $subject, $message);
 
         $Template->setError("You have successfully registered", "success", "/pages/events");
         $Template->redirect("/pages/events");
     }
 
-    $Template->setError("The email you entered have already been registered for this event", "warning", "/pages/events");
+    $Template->setError("The email you entered have already registered for this event", "warning", "/pages/events");
     $Template->redirect("/pages/events");
 }, 'POST');
 

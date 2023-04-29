@@ -79,14 +79,14 @@
 						<div class="image-column col-lg-4 col-md-12 col-sm-12">
 							<div class="inner-column">
 								<div class="image">
-									<a href="course_details"><img src="<?= $assets ?>/images/resource/year-1.jpg" alt=""></a>
+									<a><img src="<?= $assets ?>/images/resource/year-1.jpg" alt=""></a>
 								</div>
 							</div>
 						</div>
 						<!-- Content Column -->
 						<div class="content-column col-lg-4 col-md-12 col-sm-12">
 							<div class="inner-column">
-								<h3><a href="course_details">Execute MBA</a></h3>
+								<h3><a>Execute MBA</a></h3>
 								<div class="text">These in-the-moment transformational programs are the first step toward realizing your full leadership potential.</div>
 							</div>
 						</div>
@@ -103,7 +103,7 @@
 						<!-- Content Column -->
 						<div class="content-column col-lg-4 col-md-12 col-sm-12">
 							<div class="inner-column">
-								<h3><a href="course_details">Executive Certification Courses & Masterclass</a></h3>
+								<h3><a>Executive Certification Courses & Masterclass</a></h3>
 								<div class="text">All of our online certificate programs are meant to fit in with participants' full-time jobs. This not only facilitates academic advancement without interfering with employment, but it also enables participants to immediately put what they are learning into practice.</div>
 							</div>
 						</div>
@@ -112,7 +112,7 @@
 						<div class="image-column col-lg-4 col-md-12 col-sm-12">
 							<div class="inner-column">
 								<div class="image">
-									<a href="course_details"><img src="<?= $assets ?>/images/resource/year-2.jpg" alt=""></a>
+									<a><img src="<?= $assets ?>/images/resource/year-2.jpg" alt=""></a>
 								</div>
 							</div>
 						</div>
@@ -143,14 +143,14 @@
 						<div class="image-column col-lg-4 col-md-12 col-sm-12">
 							<div class="inner-column">
 								<div class="image">
-									<a href="course_details"><img src="<?= $assets ?>/images/resource/year-33.jpg" alt=""></a>
+									<a><img src="<?= $assets ?>/images/resource/year-33.jpg" alt=""></a>
 								</div>
 							</div>
 						</div>
 						<!-- Content Column -->
 						<div class="content-column col-lg-4 col-md-12 col-sm-12">
 							<div class="inner-column">
-								<h3><a href="course_details">Doctoral Programs</a></h3>
+								<h3><a>Doctoral Programs</a></h3>
 								<div class="text">Candidates can choose from a distinctive global executive Ph.D. program we offer in collaboration with major academic and research institutions worldwide.<br /> Our curriculum gives senior executives and corporate leaders the tools they need to practice reflective leadership for years while also conducting essential doctoral-level research.</div>
 							</div>
 						</div>
@@ -167,7 +167,7 @@
 						<!-- Content Column -->
 						<div class="content-column col-lg-4 col-md-12 col-sm-12">
 							<div class="inner-column">
-								<h3><a href="course_details">Leadership Symposium/Honors</a></h3>
+								<h3><a>Leadership Symposium/Honors</a></h3>
 								<div class="text">Annual bi-monthly Leadership Summits and Awards Ceremonies for participants and outstanding Alumni.</div>
 							</div>
 						</div>
@@ -176,7 +176,7 @@
 						<div class="image-column col-lg-4 col-md-12 col-sm-12">
 							<div class="inner-column">
 								<div class="image">
-									<a href="course_details"><img src="<?= $assets ?>/images/resource/year-4.jpg" alt=""></a>
+									<a><img src="<?= $assets ?>/images/resource/year-4.jpg" alt=""></a>
 								</div>
 							</div>
 						</div>
