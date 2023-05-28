@@ -148,6 +148,17 @@ class Core extends Model
 
 		return $newEvent;
 	}
+
+	//Create New Events Pictures
+	public function CreateNewPicture($pictures)
+	{
+
+		$sql = "INSERT INTO events_pictures (pictures) VALUES ('$pictures')";
+
+		$newEvent = mysqli_query($this->dbCon, $sql);
+
+		return $newEvent;
+	}
 	
 	// Retrieving Event Based on Id
 	public function GetEventByID($id)
@@ -158,6 +169,7 @@ class Core extends Model
 		return $events;
 	}
 	
+	// Event Registrations
 	public function EventRegistration($event_id, $sureName, $otherNames, $email, $mobileNumber, $jobTitle, $company, $businessNumber, $homeAddress, $country)
 	{
 
@@ -166,6 +178,15 @@ class Core extends Model
 		$registered = mysqli_query($this->dbCon, $sql);
 
 		return $registered;
+	}
+
+	// Nomination Forms
+	public function NominationForms ($fullName, $company, $email, $phoneNumber, $message)
+	{
+		$sql = "INSERT INTO `nomination_forms` (`fullName`, `company`, `email`, `phoneNumber`, `message`) VALUES ('$fullName', '$company', $email, $phoneNumber, '$message')";
+
+		$nominated = mysqli_query($this->db, $sql);
+		return $nominated;
 	}
 
 	//Create New Campaign

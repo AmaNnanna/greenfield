@@ -11,9 +11,9 @@
             </li>
 
             <ul aria-expanded="false">
-                <li><a href="/admin/pages/new-blog">Create New Event</a></li>
-                <!-- <li><a href="/admin/pages/new-campaign">Add a New Campaign</a></li>
-                <li><a href="/admin/pages/all-reviews">View All Reviews</a></li>
+                <li><a href="/admin/pages/create-event">Create New Event</a></li>
+                <li><a href="/admin/pages/upload-pictures">Upload Event Pictures</a></li>
+                <!-- <li><a href="/admin/pages/all-reviews">View All Reviews</a></li>
                 <li><a href="/admin/pages/new-diary">Add New Dairy</a></li>
                 <li><a href="/admin/pages/post-health-topic">Add New Health Topic</a></li>
                 <li><a href="/admin/pages/post-video-tutorial">Add New Video Tutorial</a></li> -->

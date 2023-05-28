@@ -242,6 +242,51 @@ $Route->add("/create_event", function () {
     $Template->redirect("/admin/pages/admin-home");
 }, 'POST');
 
+//Upload Multiple Images by Admin
+$Route->add("/post_picture", function () {
+    $Core = new Apps\Core;
+    $Template = new Apps\Template;
+
+    $data = $Core->post($_POST);
+
+    $pictures = "";
+
+    //Uploading Event Flyer
+
+    $flyer_path_to_db = "";
+
+    // Specify the directory where uploaded files will be stored
+    $uploadDir = './_store/event_pictures/';
+
+    // Create an instance of the upload class
+    $upload = new \Verot\Upload\Upload($_FILES['pictures']);
+
+    // Handle each uploaded file
+    foreach ($upload->file_src_name as $key => $filename) {
+        // Set the target directory and filename
+        $upload->file_new_name_body = 'file_' . $key;
+        $upload->Process($uploadDir);
+
+        // Check if the upload was successful
+        if ($upload->processed) {
+            $flyer_path_to_db = $Upload->file_dst_name;
+        } else {
+        }
+    }
+    $pictures = $flyer_path_to_db;
+
+
+    $newPictures = (int)$Core->CreateNewPicture($pictures);
+
+    if ($newPictures) {
+        $Template->setError("Pictures Uploaded", "success", "/admin/pages/admin-home");
+        $Template->redirect("/admin/pages/admin-home");
+    }
+
+    $Template->setError("Something went wrong.", "warning", "/admin/pages/admin-home");
+    $Template->redirect("/admin/pages/admin-home");
+}, 'POST');
+
 //Post New Campaign by Admin
 $Route->add("/new_campaign", function () {
     $Core = new Apps\Core;
@@ -289,7 +334,7 @@ $Route->add("/new_campaign", function () {
 //Post Campaign by Admin Ends
 
 //Add New Doctor
-$Route->add("/new_doctor", function() {
+$Route->add("/new_doctor", function () {
     $Core = new Apps\Core;
     $Template = new Apps\Template;
 
@@ -309,7 +354,7 @@ $Route->add("/new_doctor", function() {
 }, 'POST');
 
 //Add New Health Topic Category
-$Route->add("/new_health_topic_category", function() {
+$Route->add("/new_health_topic_category", function () {
     $Core = new Apps\Core;
     $Template = new Apps\Template;
 
@@ -329,7 +374,7 @@ $Route->add("/new_health_topic_category", function() {
 }, 'POST');
 
 //Create New Health Topic
-$Route->add("/new_health_topic", function() {
+$Route->add("/new_health_topic", function () {
     $Core = new Apps\Core;
     $Template = new Apps\Template;
 
@@ -347,7 +392,7 @@ $Route->add("/new_health_topic", function() {
     $videoTitle = $data->videoTitle;
     $healthQuote = $data->healthQuote;
     $quoteAuthor = $data->quoteAuthor;
-    
+
 
     //Uploading Health Topic Image
     $healthImage_path_to_db = "";
@@ -384,7 +429,7 @@ $Route->add("/new_health_topic", function() {
     }
 
     $videoImage = $videoImage_path_to_db;
-    
+
     $sql = "INSERT INTO 
                 `health_topics`(`healthImage`, `videoImage`, `category_id`, `healthTitle`, `imageTitle`, `firstContent`, `lastContent`, `healthVideo`, `videoTitle`, `healthQuote`, `quoteAuthor`) 
             VALUES 
@@ -401,7 +446,7 @@ $Route->add("/new_health_topic", function() {
 }, 'POST');
 
 //Create New Slide
-$Route->add("/new_slide", function() {
+$Route->add("/new_slide", function () {
     $Core = new Apps\Core;
     $Template = new Apps\Template;
 
@@ -531,7 +576,7 @@ $Route->add("/new_slide", function() {
     }
 
     $videoImage = $videoImage_path_to_db;
-    
+
     $sql = "INSERT INTO 
                 `slides`(`slideImageA`, `slideImageB`, `slideImageC`, `slideImageD`, `slideImageE`, `doctor_id`, `Title`, `slideDescriptionA`, `slideDescriptionB`, `slideDescriptionC`, `slideDescriptionD`, `slideDescriptionE`, `blogContent`, `videoLink`, `videoImage`) 
             VALUES 
@@ -548,7 +593,7 @@ $Route->add("/new_slide", function() {
 }, 'POST');
 
 //Create New Video Tutorial
-$Route->add("/new_video_tutorial", function() {
+$Route->add("/new_video_tutorial", function () {
     $Core = new Apps\Core;
     $Template = new Apps\Template;
 
@@ -582,7 +627,7 @@ $Route->add("/new_video_tutorial", function() {
     }
 
     $image_thumbnail = $image_thumbnail_path_to_db;
-    
+
     $sql = "INSERT INTO `video_tutorials`(`image_thumbnail`, `doctor_id`, `title`, `description`, `creator_name`, `creator_designation`, `video_link`, `video_source`, `video_duration`) VALUES ('{$image_thumbnail}', '{$doctor_id}', '{$title}', '{$description}', '{$creator_name}', '{$creator_designation}', '{$video_link}' '{$video_source}', '{$video_duration}')";
     $eventPosted = mysqli_query($Core->dbCon, $sql);
 
@@ -595,7 +640,7 @@ $Route->add("/new_video_tutorial", function() {
 }, 'POST');
 
 //Create New Event from AULMed
-$Route->add("/new_event", function() {
+$Route->add("/new_event", function () {
     $Core = new Apps\Core;
     $Template = new Apps\Template;
 
@@ -628,7 +673,7 @@ $Route->add("/new_event", function() {
     }
 
     $eventImage = $eventImage_path_to_db;
-    
+
     $sql = "INSERT INTO `events`(`eventImage`, `title`, `startDate`, `endDate`, `venue`, `eventDescription`, `organizer`, `email`) VALUES ('{$eventImage}', '{$title}', '{$startDate}', '{$endDate}', '{$venue}', '{$eventDescription}' '{$organizer}', '{$email}')";
     $eventPosted = mysqli_query($Core->dbCon, $sql);
 
@@ -663,7 +708,7 @@ $Route->add("/update_event/{id}/flyer", function ($id) {
     }
 
     $flyer = $flyer_path_to_db;
-    
+
     $sql = "UPDATE `events` SET `flyer`='$flyer' WHERE `id`='$id'";
     $newFlyer = mysqli_query($Core->dbCon, $sql);
 
@@ -737,7 +782,6 @@ $Route->add("/update_campaign/{id}/image", function ($id) {
         $Template->setError("Image Changed Successfully. <br />You can update the rest of the campaign.", "success", "/admin/pages/all-campaigns");
         $Template->redirect("/admin/pages/all-campaigns");
     }
-
 }, 'POST');
 
 //Change Other Posts
@@ -805,5 +849,3 @@ $Route->add("/delete-review/{id}", function ($id) {
         $Template->redirect("/admin/pages/admin-home");
     }
 }, 'POST');
-
-

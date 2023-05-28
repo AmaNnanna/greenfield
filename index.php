@@ -152,7 +152,7 @@ $Route->add("/pages/mail", function () {
     $Core->sendMail("Lillian", "New Event Registration", $subject, $message);
 }, 'POST' );
 
-//Post New Blog by Admin
+//Collect Event Registrations by id.
 $Route->add("/event_registration", function () {
     $Core = new Apps\Core;
     $Template = new Apps\Template;
@@ -197,6 +197,29 @@ $Route->add("/event_registration", function () {
 
     $Template->setError("The email you entered have already registered for this event", "warning", "/pages/events");
     $Template->redirect("/pages/events");
+}, 'POST');
+
+//Collect Nomination Forms
+$Route->add("/nomination_form", function () {
+    $Core = new Apps\Core;
+    $Template = new Apps\Template;
+
+    $data = $Core->post($_POST);
+
+    $fullName = $data->fullName;
+    $company = $data->company;
+    $email = $data->email;
+    $phoneNumber = $data->phoneNumber;
+    $message = $data->message;
+
+    $nominated = (int)$Core->NominationForms($fullName, $company, $email, $phoneNumber, $message);
+
+    if($nominated) {
+        $Template->setError("Your nomination is registered successfully", "success", "/");
+        $Template->redirect("/");
+    }
+    $Template->setError("That wasn't successful, please retry later.", "warning", "/pages/nominate");
+    $Template->redirect("/pages/nominate");
 }, 'POST');
 
 // AJAX Routes

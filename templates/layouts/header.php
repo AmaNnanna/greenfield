@@ -88,6 +88,7 @@
                                     <li><a href="/pages/about-us">About Us</a></li>
                                     <!-- <li><a href="/pages/courses">Courses</a></li> -->
                                     <li><a href="/pages/events">Events</a></li>
+                                    <li><a href="/pages/nominate">Nominate Someone</a></li>
                                     <li><a href="/pages/gallery">Gallery</a></li>
                                     <!-- <li class="dropdown"><a href="#">Courses</a>
                                         <ul>
