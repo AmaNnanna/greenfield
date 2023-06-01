@@ -13,12 +13,12 @@
   array (
     'cocur/slugify' => 
     array (
-      'pretty_version' => 'v4.2.0',
-      'version' => '4.2.0.0',
+      'pretty_version' => 'v4.3.0',
+      'version' => '4.3.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '7e7d03067d1075b1147090b3e1df672dfffb9dc3',
+      'reference' => '652234ef5f1be844a2ae1c36ad1b4c88b05160f9',
     ),
     'golojan/okpogho' => 
     array (
@@ -46,7 +46,7 @@
       array (
         0 => '9999999-dev',
       ),
-      'reference' => 'fbba9169d6f093d75744bf57913f871896c101c5',
+      'reference' => 'd8522fdaba5c86d74301f908da66b7814efa4960',
     ),
   ),
 );

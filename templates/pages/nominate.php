@@ -77,7 +77,7 @@
 									
 									<!-- Form Group -->
 									<div class="form-group col-lg-12 col-md-12 col-sm-12">
-										<button class="theme-btn btn-style-three" type="submit" name="submit-form"><span class="txt">Nominate</span></button>
+										<button class="theme-btn btn-style-three" type="submit"><spanclass="txt">Nominate</span></button>
 									</div>
 									
 								</div>

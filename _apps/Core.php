@@ -159,7 +159,7 @@ class Core extends Model
 
 		return $newEvent;
 	}
-	
+
 	// Retrieving Event Based on Id
 	public function GetEventByID($id)
 	{
@@ -168,7 +168,16 @@ class Core extends Model
 		$events = mysqli_fetch_all($events);
 		return $events;
 	}
-	
+
+	//Nomination Form
+	public function NominationForm($fullName, $company, $email, $phoneNumber, $message)
+	{
+		$sql = "INSERT INTO `nomination_forms` (`fullName`, `company`, `email`, `phoneNumber`, `message`) VALUES ( '$fullName', '$company', '$email', '$phoneNumber', '$message')";
+
+		$nominate = mysqli_query($this->dbCon, $sql);
+		return $nominate;
+	}
+
 	// Event Registrations
 	public function EventRegistration($event_id, $sureName, $otherNames, $email, $mobileNumber, $jobTitle, $company, $businessNumber, $homeAddress, $country)
 	{
@@ -178,15 +187,6 @@ class Core extends Model
 		$registered = mysqli_query($this->dbCon, $sql);
 
 		return $registered;
-	}
-
-	// Nomination Forms
-	public function NominationForms ($fullName, $company, $email, $phoneNumber, $message)
-	{
-		$sql = "INSERT INTO `nomination_forms` (`fullName`, `company`, `email`, `phoneNumber`, `message`) VALUES ('$fullName', '$company', $email, $phoneNumber, '$message')";
-
-		$nominated = mysqli_query($this->db, $sql);
-		return $nominated;
 	}
 
 	//Create New Campaign
@@ -223,7 +223,7 @@ class Core extends Model
 
 		return $campaignUpdate;
 	}
-	
+
 	/**
 	 * @param mixed $email
 	 * @param mixed $fullname

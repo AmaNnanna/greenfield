@@ -41,14 +41,10 @@ define("session_delete_timout",30);
 define("auth_session_key","logged_in");
 define("auth_url","/admin");
 define("domain", "https://greenfieldexedu.com/");
-// define("domain", "http://localhost/aulmed/");
 define("enable_DKIM_keys", false);
 
 define("db_host","localhost");
 
-// define("db_user","root");
-// define("db_password","");
-// define("db","aulmedb");
 define("db_user","greenfiy_infinix");
 define("db_password","?1&G7{uJ5F4[");
 define("db","greenfiy_infinix");

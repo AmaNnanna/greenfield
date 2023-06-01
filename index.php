@@ -135,22 +135,45 @@ $Route->add("/pages/{shortname}", function ($shortname) {
 // }, 'POST');
 
 //Post New Blog by Admin
-$Route->add("/pages/mail", function () {
+// $Route->add("/pages/mail", function () {
+//     $Core = new Apps\Core;
+
+//     $subject = "New Registration for ";
+//     $message = "<h2>A new Registration by </h2>
+//                     <p> Here are the details of the new registration <br />
+//                      Name:  <br />
+//                      Email:  <br />
+//                      Phone Number:  <br />
+//                      Company:  <br />
+//                      Position:  <br />
+//                      You can use these information to contact 
+//                      </p>
+//                     ";
+//     $Core->sendMail("Lillian", "New Event Registration", $subject, $message);
+// }, 'POST' );
+
+//Collect Nomination Form
+$Route->add("/nomination_form", function () {
     $Core = new Apps\Core;
-    
-    $subject = "New Registration for ";
-    $message = "<h2>A new Registration by </h2>
-                    <p> Here are the details of the new registration <br />
-                     Name:  <br />
-                     Email:  <br />
-                     Phone Number:  <br />
-                     Company:  <br />
-                     Position:  <br />
-                     You can use these information to contact 
-                     </p>
-                    ";
-    $Core->sendMail("Lillian", "New Event Registration", $subject, $message);
-}, 'POST' );
+    $Template = new Apps\Template();
+
+    $data = $Core->post($_POST);
+
+    $fullName = $data->fullName;
+    $company = $data->company;
+    $email = $data->email;
+    $phoneNumber = $data->phoneNumber;
+    $message = $data->message;
+
+    $nominated = (int)$Core->NominationForm($fullName, $company, $email, $phoneNumber, $message);
+
+    if ($nominated) {
+        $Template->setError("We've received your nomination. Thank you.", "success", "/");
+        $Template->redirect("/");
+    }
+    $Template->setError("That wasn't successful, please retry later.", "warning", "/pages/nominate");
+    $Template->redirect("/pages/nominate");
+}, 'POST');
 
 //Collect Event Registrations by id.
 $Route->add("/event_registration", function () {
@@ -197,29 +220,6 @@ $Route->add("/event_registration", function () {
 
     $Template->setError("The email you entered have already registered for this event", "warning", "/pages/events");
     $Template->redirect("/pages/events");
-}, 'POST');
-
-//Collect Nomination Forms
-$Route->add("/nomination_form", function () {
-    $Core = new Apps\Core;
-    $Template = new Apps\Template;
-
-    $data = $Core->post($_POST);
-
-    $fullName = $data->fullName;
-    $company = $data->company;
-    $email = $data->email;
-    $phoneNumber = $data->phoneNumber;
-    $message = $data->message;
-
-    $nominated = (int)$Core->NominationForms($fullName, $company, $email, $phoneNumber, $message);
-
-    if($nominated) {
-        $Template->setError("Your nomination is registered successfully", "success", "/");
-        $Template->redirect("/");
-    }
-    $Template->setError("That wasn't successful, please retry later.", "warning", "/pages/nominate");
-    $Template->redirect("/pages/nominate");
 }, 'POST');
 
 // AJAX Routes
