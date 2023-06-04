@@ -47,26 +47,26 @@ $Route->add("/pages/events", function () {
 }, 'GET');
 
 //Get Details of Each Blog
-$Route->add("/pages/{id}/blog-details", function ($id) {
+// $Route->add("/pages/{id}/blog-details", function ($id) {
 
-    $Core = new Apps\Core;
-    $Template = new Apps\Template;
+//     $Core = new Apps\Core;
+//     $Template = new Apps\Template;
 
-    $Template->addheader("layouts.header");
-    $Template->addfooter("layouts.footer");
+//     $Template->addheader("layouts.header");
+//     $Template->addfooter("layouts.footer");
 
-    $Template->assign("haspage", true);
-    $Template->assign("menukey", "pages.blog-details");
-    $Template->assign("title", "Blog Details");
+//     $Template->assign("haspage", true);
+//     $Template->assign("menukey", "pages.blog-details");
+//     $Template->assign("title", "Blog Details");
 
-    $sql = "SELECT * FROM blog_posts WHERE id='$id'";
-    $full_blog = mysqli_query($Core->dbCon, $sql);
-    $BlogDetails = mysqli_fetch_object($full_blog);
+//     $sql = "SELECT * FROM blog_posts WHERE id='$id'";
+//     $full_blog = mysqli_query($Core->dbCon, $sql);
+//     $BlogDetails = mysqli_fetch_object($full_blog);
 
-    $Template->assign("BlogDetails", $BlogDetails);
+//     $Template->assign("BlogDetails", $BlogDetails);
 
-    $Template->render("pages.blog-details");
-}, 'GET');
+//     $Template->render("pages.blog-details");
+// }, 'GET');
 
 
 //Event Registration
@@ -82,10 +82,7 @@ $Route->add("/pages/{id}/registration", function ($id) {
     $Template->assign("menukey", "pages.registration");
     $Template->assign("title", "Registration Page");
 
-    $sql = "SELECT * FROM events WHERE id='$id'";
-    $register = mysqli_query($Core->dbCon, $sql);
-    $Registrations = mysqli_fetch_object($register);
-
+    $Registrations = $Core->SelectEvent($id);
     $Template->assign("Registrations", $Registrations);
 
     $Template->render("pages.registration");
@@ -134,24 +131,6 @@ $Route->add("/pages/{shortname}", function ($shortname) {
 //     $Template->redirect("/");
 // }, 'POST');
 
-//Post New Blog by Admin
-// $Route->add("/pages/mail", function () {
-//     $Core = new Apps\Core;
-
-//     $subject = "New Registration for ";
-//     $message = "<h2>A new Registration by </h2>
-//                     <p> Here are the details of the new registration <br />
-//                      Name:  <br />
-//                      Email:  <br />
-//                      Phone Number:  <br />
-//                      Company:  <br />
-//                      Position:  <br />
-//                      You can use these information to contact 
-//                      </p>
-//                     ";
-//     $Core->sendMail("Lillian", "New Event Registration", $subject, $message);
-// }, 'POST' );
-
 //Collect Nomination Form
 $Route->add("/nomination_form", function () {
     $Core = new Apps\Core;
@@ -163,11 +142,25 @@ $Route->add("/nomination_form", function () {
     $company = $data->company;
     $email = $data->email;
     $phoneNumber = $data->phoneNumber;
+    $nominee = $data->nominee;
     $message = $data->message;
 
-    $nominated = (int)$Core->NominationForm($fullName, $company, $email, $phoneNumber, $message);
+    $nominated = (int)$Core->NominationForm($fullName, $company, $email, $phoneNumber, $nominee, $message);
 
     if ($nominated) {
+
+        $subject = "{$fullName} just sent in a new nomination";
+        $body = "<h2>You just received One New Nomination</h2>
+                    <p> Here are the details of the new nomination <br />
+                     Name: {$fullName} <br />
+                     Email: {$email} <br />
+                     Company: {$company} <br />
+                     Nominee: {$nominee} <br /><br />
+                     Reason for nomination. <br /> {$message}
+                     </p>
+                    ";
+        $Core->sendMail("info@greenfieldexedu.com", "Lillian", $subject,  "New Nomination", $body);
+
         $Template->setError("We've received your nomination. Thank you.", "success", "/");
         $Template->redirect("/");
     }
@@ -197,22 +190,23 @@ $Route->add("/event_registration", function () {
 
     if ($registered) {
 
-        $eventSql = "SELECT * FROM `events` WHERE id = $event_id";
-        $sql = mysqli_query($Core->db, $eventSql);
-        $eventName = mysqli_fetch_object($sql);
-
-        $subject = "New Registration for <?= $eventName->evetName ?>";
-        $message = "<h2>A new Registration by {$sureName}</h2>
+        $sql = "SELECT `evetTitle` FROM `events` WHERE `event_id` = '$id'";
+        $title = mysqli_query($Core->dbCon, $sql);
+        $title = mysqli_fetch_object($title);
+        
+        $caption = "New Registration for {$title}";
+        $subject = "{$sureName} has just registered for {$title}";
+        $body = "<h2>You just received One New Registration</h2>
                     <p> Here are the details of the new registration <br />
                      Name: {$sureName}, {$otherNames} <br />
                      Email: {$email} <br />
                      Phone Number: {$mobileNumber} <br />
                      Company: {$company} <br />
-                     Position: {$jobTitle} <br />
+                     Role: {$jobTitle} <br /><br />
                      You can use these information to contact {$sureName}
                      </p>
                     ";
-        $Core->sendMail("Lillian", "New Event Registration", $subject, $message);
+        $Core->sendMail("info@greenfieldexedu.com", "Lillian", $subject,  "$caption", $body);
 
         $Template->setError("You have successfully registered", "success", "/pages/events");
         $Template->redirect("/pages/events");

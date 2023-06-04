@@ -345,7 +345,16 @@
                     </td>
                 </tr><!-- end tr -->
                 <!-- 1 Column Text + Button : END -->
-            </table>  <!-- container -->
+            </table>
+            <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: auto;">
+
+                <tr>
+                    <td class="bg_light" style="text-align: center;">
+                        <p style="font-size: larger; font-weight:bolder;">Greenfield Executive Education <a href="https://greenfieldexedu.com" style="color: rgba(0,0,0,.8);">Go to website</a></p>
+                    </td>
+                </tr>
+            </table>
+
         </div>
     </center>
 </body>

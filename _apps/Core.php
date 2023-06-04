@@ -160,7 +160,16 @@ class Core extends Model
 		return $newEvent;
 	}
 
-	// Retrieving Event Based on Id
+	// Select Everything in Events, for People to Register per Event
+	public function SelectEvent($id)
+	{
+		$sql = "SELECT * FROM events WHERE id='$id'";
+		$register = mysqli_query($this->dbCon, $sql);
+		$registrations = mysqli_fetch_object($register);
+		return $registrations;
+	}
+
+	// Retrieving Event Based on Id and Show to Admin
 	public function GetEventByID($id)
 	{
 		$sql = "SELECT * FROM `registrations` WHERE `event_id`='$id'";
@@ -170,9 +179,9 @@ class Core extends Model
 	}
 
 	//Nomination Form
-	public function NominationForm($fullName, $company, $email, $phoneNumber, $message)
+	public function NominationForm($fullName, $company, $email, $phoneNumber, $nominee, $message)
 	{
-		$sql = "INSERT INTO `nomination_forms` (`fullName`, `company`, `email`, `phoneNumber`, `message`) VALUES ( '$fullName', '$company', '$email', '$phoneNumber', '$message')";
+		$sql = "INSERT INTO `nomination_forms` (`fullName`, `company`, `email`, `phoneNumber`, `nominee`, `message`) VALUES ( '$fullName', '$company', '$email', '$phoneNumber', '$nominee', '$message')";
 
 		$nominate = mysqli_query($this->dbCon, $sql);
 		return $nominate;
@@ -232,7 +241,7 @@ class Core extends Model
 	 * @param string $type
 	 * @return void
 	 */
-	public function sendMail($fullname, $subject, $caption, $body, $template = 'mails.template')
+	public function sendMail($email, $fullname, $subject, $caption, $body, $template = 'mails.template')
 	{
 		$Mailer = new Emailer();
 		$EmailTemplate = new EmailTemplate($template);
@@ -241,9 +250,9 @@ class Core extends Model
 		$EmailTemplate->fullname = $fullname;
 		$EmailTemplate->mailbody = $body;
 		$Mailer->SetTemplate($EmailTemplate);
-		$Mailer->toEmail = "info@greenfieldexedu.com";
+		$Mailer->toEmail = "$email";
 		$Mailer->toName = "Lillian";
-		$Mailer->subject = "{$subject}";
+		$Mailer->subject = "$subject";
 		$Mailer->fromEmail = "admin@greenfieldexedu.com";
 		$Mailer->fromName = "Greenfield Admin";
 		return $Mailer->send();
